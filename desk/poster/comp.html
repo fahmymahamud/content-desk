@@ -1,0 +1,19 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+@font-face{font-family:Montserrat;font-weight:800;src:url(node_modules/@fontsource/montserrat/files/montserrat-latin-800-normal.woff2)}
+@font-face{font-family:Montserrat;font-weight:900;src:url(node_modules/@fontsource/montserrat/files/montserrat-latin-900-normal.woff2)}
+/* Colours: scenes.js may override these on #stage (stage.style.setProperty('--cap-bg','#...')) to match the poster's palette */
+#stage{--cap-bg:#022c5e;--cap-fg:#fff;--cap-hi:#5fd8ff;--card-line:#bfe6f5;--navy:#022c5e}
+html,body{margin:0;width:1080px;height:1920px;overflow:hidden;background:#000}
+#stage{position:absolute;left:0;top:0;width:1080px;height:1920px;overflow:hidden;background:#27b3e3}
+#cam{position:absolute;inset:0}
+.o{position:absolute;left:0;top:0;transform-origin:50% 50%}
+.wave{position:absolute;border-radius:50%;background:rgba(255,255,255,.55)}
+.card{background:#fff;border:7px solid var(--card-line);border-radius:56px;box-shadow:0 26px 50px rgba(0,60,110,.25);box-sizing:border-box}
+.chip{background:#fff;border-radius:40px;box-shadow:0 16px 34px rgba(0,60,110,.28);box-sizing:border-box;border:5px solid var(--card-line)}
+.navy{background:var(--navy);border-radius:64px;box-shadow:0 24px 46px rgba(0,30,70,.4);border:6px solid #fff;box-sizing:border-box;overflow:hidden}
+.navy img{mix-blend-mode:lighten}
+#cap{position:absolute;left:0;right:0;top:1452px;text-align:center;z-index:50}
+#cap span.b{display:inline-block;background:var(--cap-bg);color:var(--cap-fg);border-radius:30px;padding:16px 34px;font:900 52px/1.15 Montserrat,sans-serif;letter-spacing:-.5px;box-shadow:0 12px 26px rgba(0,30,70,.35);border:4px solid #fff;max-width:940px}
+#cap em{font-style:normal;color:var(--cap-hi)}
+</style></head><body><div id="stage"><div id="cam"></div><div id="cap"></div></div>
+<script src="engine.js"></script><script src="scenes.js"></script></body></html>

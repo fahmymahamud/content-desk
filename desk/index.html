@@ -1,0 +1,500 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Content Desk</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Montserrat:wght@800;900&display=swap">
+<style>
+/* Layout: phone-first studio. Ideas -> Approved (picture storyboard + edit prompt) -> Made (video, caption, post). One light look by choice. */
+:root{
+  --paper:#f4f7f5; --card:#ffffff; --ink:#151c2b; --muted:#5b6474; --line:#dde3dc;
+  --green:#12824a; --green-soft:#e3f3ea; --amber:#9a5b00; --amber-soft:#fbf0dc; --grey-soft:#eef0f3; --blue:#1f5fbf; --blue-soft:#e6eefb; --red:#b3261e; --red-soft:#fbeaea;
+  --display:'Montserrat','Arial Black',sans-serif; --body:'Inter',system-ui,sans-serif;
+  color-scheme:light;
+}
+body{background:var(--paper);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.5}
+.wrap{max-width:820px;margin:0 auto;padding-block:18px 70px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.top{display:flex;align-items:center;gap:12px}
+.logo{width:44px;height:44px;border-radius:12px;background:var(--ink);color:#fff;display:flex;align-items:center;justify-content:center;font:900 14px var(--display);flex:none}
+h1{font:900 23px/1.1 var(--display);margin:0;letter-spacing:-.3px}
+.sub{color:var(--muted);font-size:13px;margin:2px 0 0}
+.tabs{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;display:flex;gap:6px;margin:14px 0 14px;padding:8px 0;background:var(--paper)}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:21;background:var(--paper)}
+.tab{flex:1;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:12px;padding:9px 6px;font:800 14px var(--body);cursor:pointer;display:flex;gap:6px;align-items:center;justify-content:center}
+.tab[aria-pressed="true"]{background:var(--ink);color:#fff;border-color:var(--ink)}
+.tab span{font-variant-numeric:tabular-nums;opacity:.7;font-weight:600}
+button:focus-visible,textarea:focus-visible,input:focus-visible,summary:focus-visible{outline:3px solid var(--green);outline-offset:2px}
+.panel{display:grid;gap:14px}
+.box{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px 16px;min-width:0}
+.find h2{font:900 16px var(--display);margin:0 0 6px}
+textarea,input[type=text]{width:100%;box-sizing:border-box;border:1px solid var(--line);border-radius:10px;padding:9px 11px;font:500 14px/1.4 var(--body);color:var(--ink);background:var(--card);resize:vertical}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:10px}
+.btn{border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:10px;padding:9px 14px;font:800 14px var(--body);cursor:pointer}
+a.btn{text-decoration:none;display:inline-block}
+.btn.go{background:var(--green);border-color:var(--green);color:#fff}
+.btn.dark{background:var(--ink);border-color:var(--ink);color:#fff}
+.btn.ghost{background:transparent}
+.btn:disabled{opacity:.5;cursor:default}
+.hint{font-size:12.5px;color:var(--muted)}
+.meta{display:flex;gap:6px;flex-wrap:wrap;align-items:center;font-size:12px;color:var(--muted)}
+.pill{border-radius:999px;padding:2px 9px;font:700 11px var(--body)}
+.pillar{background:var(--amber-soft);color:var(--amber)}
+h3{font:900 18px/1.2 var(--display);margin:8px 0 6px;text-wrap:balance}
+.hook{background:var(--green-soft);border-left:4px solid var(--green);border-radius:8px;padding:8px 12px;font:800 15px/1.3 var(--body);margin:8px 0}
+.why{font-size:13px;color:var(--muted)}
+details{border-top:1px solid var(--line);margin-top:10px;padding-top:8px}
+summary{cursor:pointer;font:700 13px var(--body)}
+.src{margin:6px 0 0;padding-left:18px;font-size:13px}.src a{color:var(--blue)}
+.cap{white-space:pre-wrap;background:var(--grey-soft);border-radius:10px;padding:10px 12px;margin-top:8px;font-size:14px}
+.job{display:flex;gap:8px;align-items:center;border-radius:10px;padding:8px 11px;font-size:13px;margin-top:10px}
+.job.queued,.job.working{background:var(--blue-soft);color:var(--blue)} .job.done{background:var(--green-soft);color:var(--green)} .job.failed{background:var(--red-soft);color:var(--red)} .job.scheduled{background:var(--amber-soft);color:var(--amber)} .job.cancelled{background:var(--grey-soft);color:var(--muted)}
+input[type=datetime-local]{border:1px solid var(--line);border-radius:10px;padding:8px 10px;font:600 14px var(--body);color:var(--ink);background:var(--card);max-width:100%}
+.sched{margin-top:12px;padding-top:10px;border-top:1px solid var(--line)}
+.spin{width:14px;height:14px;border:2.5px solid currentColor;border-right-color:transparent;border-radius:50%;animation:sp 1s linear infinite;flex:none}
+@keyframes sp{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion:reduce){.spin{animation:none}}
+.strip{display:flex;gap:10px;overflow-x:auto;padding:8px 2px 10px;scroll-snap-type:x mandatory}
+.fr{flex:none;width:150px;scroll-snap-align:start}
+.fw{position:relative;width:150px;height:267px;border-radius:12px;overflow:hidden;border:1px solid var(--line);cursor:pointer;background:#f1f6f3}
+.fw .cs-st{transform:scale(.5556)}
+.strip.tight .fr,.strip.tight .fw{width:116px}
+.strip.tight .fw{height:206px}
+.strip.tight .fw .cs-st{transform:scale(.4296)}
+.strip.tight .fv{font-size:11px}
+.strip.tight .fn{font-size:10px}
+.fn{font:800 11px var(--body);color:var(--muted);margin-top:5px;display:flex;justify-content:space-between}
+.fv{font-size:12.5px;line-height:1.35;margin-top:2px}
+.empty{background:var(--card);border:1px dashed var(--line);border-radius:16px;padding:22px;text-align:center;color:var(--muted)}
+.empty b{display:block;color:var(--ink);font-size:16px;margin-bottom:4px}
+.made-grid{display:grid;grid-template-columns:200px minmax(0,1fr);gap:16px}
+@media (max-width:560px){.made-grid{grid-template-columns:1fr}}
+video{display:block;width:100%;max-width:240px;max-height:430px;margin:0 auto;border-radius:12px;background:#000;aspect-ratio:9/16}
+.thumb{width:90px;border-radius:8px;border:1px solid var(--line)}
+.plat{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+.plat label{display:flex;gap:6px;align-items:center;border:1px solid var(--line);border-radius:999px;padding:6px 12px;font:700 13px var(--body);cursor:pointer;background:var(--card)}
+.posted a{color:var(--blue);font-weight:700}
+.err{color:var(--red);font-size:13px}
+.mstrip{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.mi{position:relative;width:96px;border:1px solid var(--line);border-radius:12px;background:var(--grey-soft);overflow:hidden;font-size:11.5px}
+.mi img,.mi video{display:block;width:96px;height:96px;object-fit:cover;background:#151c2b;border-radius:0;max-width:none;max-height:none;aspect-ratio:auto;margin:0}
+.mi .aud{width:96px;height:96px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;font-size:30px;background:var(--blue-soft);border:0;cursor:pointer;color:var(--blue)}
+.mi .aud small{font:700 11px var(--body)}
+.mi .cap{padding:4px 6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--muted)}
+.mi .x{position:absolute;top:4px;right:4px;width:24px;height:24px;border-radius:50%;border:0;background:rgba(21,28,43,.75);color:#fff;font:800 13px/24px var(--body);cursor:pointer;padding:0}
+.mi .vo{display:flex;gap:4px;align-items:center;padding:3px 6px 5px;font:700 11px var(--body);color:var(--ink);cursor:pointer}
+.mi.up{display:flex;align-items:center;justify-content:center;height:120px;color:var(--blue)}
+.mi .note{padding:0 6px 5px;color:var(--muted);font-size:11px;line-height:1.25;max-height:42px;overflow:hidden}
+.addm{border-style:dashed}
+.proj{border:2px solid var(--ink)}
+.proj>h2{font:900 18px/1.2 var(--display);margin:6px 0}
+.pill.inp{background:var(--ink);color:#fff}
+.pill.angle{background:var(--blue-soft);color:var(--blue)}
+.inq{margin:6px 0 0;padding:8px 12px;border-left:4px solid var(--line);background:var(--grey-soft);border-radius:8px;white-space:pre-wrap;font-size:14px}
+.opts{display:grid;gap:10px;margin-top:12px}
+.opts .box{background:var(--paper)}
+.opts-h{font:800 13px var(--body);margin:14px 0 0;color:var(--muted)}
+select{border:1px solid var(--line);border-radius:10px;padding:8px 10px;font:700 14px var(--body);background:var(--card);color:var(--ink)}
+.sec{font:900 16px var(--display);margin:6px 0 0}
+.palive{margin-top:12px;padding:12px 14px;border:1px dashed var(--green);border-radius:12px;background:var(--green-soft)}
+</style>
+<div class="wrap">
+  <div class="top"><div class="logo">CD</div><div><h1>Content Desk</h1><p class="sub">One input, several ideas. Approve the best, check the storyboard, make the video, post.</p></div></div>
+  <div class="tabs" role="group" aria-label="Sections">
+    <button class="tab" data-t="ideas" aria-pressed="true">Ideas <span id="n-ideas">0</span></button>
+    <button class="tab" data-t="approved" aria-pressed="false">Approved <span id="n-approved">0</span></button>
+    <button class="tab" data-t="made" aria-pressed="false">Made <span id="n-made">0</span></button>
+  </div>
+  <div id="view" class="panel"><div class="empty"><b>Loading your desk…</b>Your ideas, storyboards and videos appear here.</div></div>
+</div>
+<script src="scenes.js"></script>
+<script>
+/* ===== YOUR SETTINGS (edit these 6 lines) ===== */
+const CONFIG={
+  brand:'My Channel',          // your channel or brand name
+  handle:'@mychannel',         // your social handle, shown on every reel
+  avatar:false,                // true only if you added your own pose images in av/ (see README)
+  avatarDesc:'',               // e.g. 'a cartoon avatar in a hoodie' (used when avatar is true)
+  audience:'',                 // e.g. 'busy small business owners in Malaysia' (optional)
+  trigger:'PASTE_YOUR_DESK_AGENT_TRIGGER_ID'  // id of your "Desk Agent" scheduled task (trig_...)
+};
+const TRIGGER=CONFIG.trigger, SERVER='Claude Code Remote';
+let tab='ideas', ideas=[], projects=[], jobs={}, db=null, mcp=null, sample=null, assets=null, dls=null, canWrite=true, busy={}, pending=[], upBusy={}, mErr={}, drawQ=[], drawing=false;
+const $=s=>document.querySelector(s);
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+DESK.css();
+document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>{tab=b.dataset.t;document.querySelectorAll('.tab').forEach(x=>x.setAttribute('aria-pressed',x===b));render()});
+const st=i=>i.status||'new';
+const IN={ideas:['new'],approved:['approved','made'],made:['ready','posted']};
+const inTab=i=>IN[tab].includes(st(i));
+const NARRATORS=[[16,'Michael — warm male'],[17,'Onyx — deep male'],[18,'Puck — bright male'],[15,'Liam — younger male'],[26,'George — British male'],[3,'Heart — female'],[9,'Sarah — female']];
+function lastJob(ideaId,type){return Object.values(jobs).filter(j=>j.ideaId===ideaId&&(!type||[].concat(type).includes(j.type))).sort((a,b)=>String(b.at).localeCompare(String(a.at)))[0]}
+const whenTxt=iso=>{try{return new Date(iso).toLocaleString('en-SG',{weekday:'short',day:'numeric',month:'short',hour:'numeric',minute:'2-digit'})}catch(_){return iso}};
+const PLAT={instagram:'Instagram',facebook:'Facebook',youtube:'YouTube Shorts',tiktok:'TikTok'};
+function jobHtml(j){if(!j)return'';const lab={queued:'Starting the agent…',working:j.message||'Working…',done:j.message||'Done',failed:j.message||'Something went wrong',scheduled:'📅 Scheduled for '+whenTxt(j.postAt)+' → '+(j.platforms||[]).map(p=>PLAT[p]||p).join(', '),cancelled:'Schedule cancelled'}[j.state]||j.state;
+  return `<div class="job ${esc(j.state)}" role="status">${['queued','working'].includes(j.state)?'<span class="spin"></span>':''}<span>${esc(lab)}</span></div>`}
+function counts(){const shown=i=>{const p=pOf(i);return !(p&&p.status==='closed')};const n=k=>ideas.filter(i=>IN[k].includes(st(i))&&(k!=='ideas'||shown(i))).length;$('#n-ideas').textContent=n('ideas');$('#n-approved').textContent=n('approved');$('#n-made').textContent=n('made')}
+// ---------- media ----------
+const KIND_ICON={image:'🖼️',video:'🎬',audio:'🎙️'};
+function mediaItem(m,o){o=o||{};const url='/_blob/'+m.id;let body;
+  if(m.kind==='image')body=`<img src="${esc(url)}" alt="${esc(m.name||'photo')}" loading="lazy">`;
+  else if(m.kind==='video')body=`<video data-k="mi-${esc(m.id)}" src="${esc(url)}#t=0.5" controls playsinline preload="metadata"></video>`;
+  else body=`<button class="aud" data-play="${esc(m.id)}" aria-label="Play voice note">▶<small>${m.seconds?Math.round(m.seconds)+' s':'Voice'}</small></button>`;
+  return `<div class="mi" title="${esc(m.name||'')}">${body}${o.remove!=null?`<button class="x" data-rmmedia="${esc(o.remove)}" aria-label="Remove">✕</button>`:''}
+   <div class="cap">${KIND_ICON[m.kind]||''} ${esc(m.name||m.kind)}</div>
+   ${m.kind!=='image'&&o.voice!=null?`<label class="vo"><input type="checkbox" data-voice="${esc(o.voice)}" ${o.voOn?'checked':''}> My voiceover</label>`:''}
+   ${m.note?`<div class="note">${esc(m.note)}</div>`:''}</div>`}
+function cardMedia(i){const ms=mediaOf(i),p=pOf(i);if(!ms.length&&!p)return'';
+  return `${p?`<p class="hint" style="margin:6px 0 0">From input: <b>${esc(pTitle(p))}</b></p>`:''}${ms.length?`<div class="mstrip">${ms.map((m,k)=>mediaItem(m,{})).join('')}</div>${voiceOf(i)!=null?'<p class="hint">Narrated with your own voice.</p>':''}`:''}`}
+const MAXB=20*1024*1024;
+function kindOf(f){const t=f.type||'',n=(f.name||'').toLowerCase();if(t.startsWith('image/')||/\.(heic|heif)$/.test(n))return'image';if(t.startsWith('video/')||/\.(mp4|mov|webm|m4v)$/.test(n))return'video';if(t.startsWith('audio/')||/\.(m4a|mp3|wav|ogg|opus|aac|amr|flac)$/.test(n))return'audio';return null}
+async function shrinkImage(f){if(/gif|svg/.test(f.type)&&f.size<MAXB)return{blob:f,type:f.type};
+  try{const bm=await createImageBitmap(f);const k=Math.min(1,1600/Math.max(bm.width,bm.height));const c=document.createElement('canvas');c.width=Math.round(bm.width*k);c.height=Math.round(bm.height*k);c.getContext('2d').drawImage(bm,0,0,c.width,c.height);
+    const b=await new Promise(r=>c.toBlob(r,'image/jpeg',.88));if(b)return{blob:b,type:'image/jpeg'}}catch(e){}
+  if(['image/png','image/jpeg','image/webp','image/gif'].includes(f.type)&&f.size<MAXB)return{blob:f,type:f.type};
+  throw new Error('This photo type cannot be read here. Send it as JPG or PNG.')}
+function wavBytes(buf){const ch=buf.getChannelData(0),n=ch.length,sr=buf.sampleRate,ab=new ArrayBuffer(44+n*2),v=new DataView(ab);const w=(o,t)=>{for(let k=0;k<t.length;k++)v.setUint8(o+k,t.charCodeAt(k))};
+  w(0,'RIFF');v.setUint32(4,36+n*2,true);w(8,'WAVE');w(12,'fmt ');v.setUint32(16,16,true);v.setUint16(20,1,true);v.setUint16(22,1,true);v.setUint32(24,sr,true);v.setUint32(28,sr*2,true);v.setUint16(32,2,true);v.setUint16(34,16,true);w(36,'data');v.setUint32(40,n*2,true);
+  for(let k=0;k<n;k++){const x=Math.max(-1,Math.min(1,ch[k]));v.setInt16(44+k*2,x<0?x*32768:x*32767,true)}return new Uint8Array(ab)}
+function b64(u8){let s='';for(let k=0;k<u8.length;k+=32768)s+=String.fromCharCode.apply(null,u8.subarray(k,k+32768));return btoa(s)}
+async function voiceBlob(f){let dec;
+  try{const AC=window.AudioContext||window.webkitAudioContext;const ac=new AC();dec=await ac.decodeAudioData(await f.arrayBuffer());ac.close&&ac.close()}catch(e){dec=null}
+  if(!dec)throw new Error('This voice file cannot be read here. Try .m4a or .mp3.');
+  if(dec.duration>300)throw new Error('Voice note is over 5 minutes. Send a shorter one.');
+  const sr=24000,off=new OfflineAudioContext(1,Math.ceil(dec.duration*sr),sr);const src=off.createBufferSource();src.buffer=dec;src.connect(off.destination);src.start();const out=await off.startRendering();
+  return{blob:new Blob(['data:audio/wav;base64,'+b64(wavBytes(out))],{type:'text/plain'}),type:'text/plain',seconds:Math.round(dec.duration*10)/10}}
+async function uploadOne(f){const kind=kindOf(f);if(!kind)throw new Error(`${f.name}: only photos, videos and voice notes.`);let r;
+  if(kind==='image')r=await shrinkImage(f);
+  else if(kind==='audio')r=await voiceBlob(f);
+  else{if(f.size>MAXB)throw new Error(`${f.name} is over 20 MB. Trim it or export a smaller copy.`);r={blob:f,type:/webm/.test(f.type)||/\.webm$/i.test(f.name)?'video/webm':'video/mp4'}}
+  let up;try{up=await assets.upload(r.blob,{type:r.type})}catch(e){throw new Error(e&&e.code==='too_large'?`${f.name} is over 20 MB.`:e&&e.code==='quota_or_state'?'The desk storage is full. Remove old media first.':`Could not upload ${f.name}. Try again.`)}
+  const m={id:up.id,kind,name:(f.name||kind).slice(0,60),type:r.type,addedAt:new Date().toISOString()};if(r.seconds)m.seconds=r.seconds;return m}
+function pickFiles(){return new Promise(res=>{const inp=document.createElement('input');inp.type='file';inp.multiple=true;inp.accept='image/*,video/*,audio/*,.m4a,.mp3,.wav,.ogg,.opus,.aac,.heic,.mov';inp.onchange=()=>res([...inp.files]);inp.click()})}
+async function addMedia(target){const files=await pickFiles();if(!files.length)return;upBusy[target]=true;delete mErr[target];render();const got=[],errs=[];
+  for(const f of files){try{got.push(await uploadOne(f))}catch(e){errs.push(e.message)}}
+  try{if(target==='find')pending=pending.concat(got);
+    else if(got.length&&target.startsWith('P|')){const pid=target.slice(2),pr=projects.find(x=>x.id===pid);await db.doc('projects/'+pid).update({media:(pr&&pr.media||[]).concat(got)});await fire({type:'media',projectId:pid})}}
+  catch(e){errs.push('Could not save the media to this input.')}
+  delete upBusy[target];if(errs.length)mErr[target]=errs.join(' ');render()}
+const voiceUrls={};let voiceNow=null;
+async function playVoice(btn,id){const lab=t=>{btn.innerHTML=t};
+  try{if(voiceNow&&voiceNow.id===id&&!voiceNow.a.paused){voiceNow.a.pause();lab('▶<small>Paused</small>');return}
+   if(voiceNow&&voiceNow.id!==id)voiceNow.a.pause();
+   if(!voiceUrls[id]){lab('…<small>Loading</small>');const t=await (await fetch('/_blob/'+id)).text();const bin=atob(t.split(',').pop().trim());const u=new Uint8Array(bin.length);for(let k=0;k<bin.length;k++)u[k]=bin.charCodeAt(k);voiceUrls[id]=URL.createObjectURL(new Blob([u],{type:'audio/wav'}))}
+   const a=voiceNow&&voiceNow.id===id?voiceNow.a:new Audio(voiceUrls[id]);voiceNow={id,a};a.onended=()=>lab('▶<small>Play again</small>');await a.play();lab('⏸<small>Playing</small>')}
+  catch(e){lab('⚠<small>Could not play</small>')}}
+const pOf=i=>i&&i.projectId?projects.find(p=>p.id===i.projectId)||null:null;
+const mediaOf=i=>{const p=pOf(i);return p?(p.media||[]):(i.media||[])};
+const voiceOf=i=>{const p=pOf(i);const v=p?p.voiceover:i.voiceover;return typeof v==='number'?v:null};
+const pTitle=p=>p.title||(p.query?(p.query.length>60?p.query.slice(0,57)+'…':p.query):(p.media||[]).length?'Your media':"Today's news");
+function lastPJob(pid){return Object.values(jobs).filter(j=>j.projectId===pid).sort((a,b)=>String(b.at).localeCompare(String(a.at)))[0]}
+function mediaOpts(i){return mediaOf(i).map(m=>({kind:m.kind,url:'/_blob/'+m.id}))}
+// ---------- render ----------
+function render(){counts();const v=$('#view');const keep=document.activeElement&&document.activeElement.id;const vals={};document.querySelectorAll('textarea,input[type=text],input[type=datetime-local]').forEach(e=>vals[e.id]=e.value);
+  const list=ideas.filter(inTab).sort((a,b)=>String(b.date).localeCompare(String(a.date))||(a.rank||9)-(b.rank||9));
+  let h='';
+  if(tab==='ideas'){
+    h+=`<section class="box find"><h2>New input</h2><p class="hint" style="margin:0 0 8px">One input = one project. Give an idea, a topic, a link, text, photos, clips or a voice note, and the agent develops 3 different reel ideas from it and draws every scene so you can watch them. Leave everything empty for today's news.</p>
+    <textarea id="q" rows="3" placeholder="Your idea, topic, link or text"></textarea>
+    ${assets?`<div class="mstrip" id="pendStrip">${pending.map((m,k)=>mediaItem(m,{remove:'p'+k,voice:'p'+k,voOn:m.voiceover})).join('')}${upBusy.find?`<div class="mi up"><span class="spin"></span></div>`:''}</div>`:''}
+    ${mErr.find?`<p class="err">${esc(mErr.find)}</p>`:''}
+    <div class="row"><button class="btn go" id="findBtn" ${canWrite&&mcp&&!upBusy.find?'':'disabled'}>Develop 3 ideas</button>${assets?`<button class="btn addm" data-addmedia="find" ${upBusy.find?'disabled':''}>＋ Photo, clip or voice</button>`:''}<label class="hint" for="nar">Narrator</label><select id="nar">${NARRATORS.map(([v,n])=>`<option value="${v}" ${v===16?'selected':''}>${esc(n)}</option>`).join('')}</select></div>
+    <p class="hint">${mcp?'Takes a few minutes. You get 3 ideas, each drawn out as scenes you can watch.':'Allow "Claude Code Remote" for this page to use this button.'}</p></section>`;
+    const open=projects.filter(p=>{if(p.status==='closed')return false;const its=ideas.filter(i=>i.projectId===p.id),j=lastPJob(p.id);
+      return !(its.length&&its.every(i=>st(i)==='skipped')&&!(j&&['queued','working'].includes(j.state)))}).sort((a,b)=>String(b.createdAt).localeCompare(String(a.createdAt)));
+    h+=open.map(projectCard).join('');
+    const loose=list.filter(i=>!pOf(i));
+    if(loose.length)h+=`<h2 class="sec">Earlier ideas (before projects)</h2>`+loose.map(ideaCard).join('');
+    if(!open.length&&!loose.length)h+=`<div class="empty"><b>No projects yet</b>Give the agent an input above.</div>`}
+  else if(tab==='approved'){h+=list.length?list.map(boardCard).join(''):`<div class="empty"><b>Nothing building</b>Approve an idea and its video is built here for you to watch.</div>`}
+  else{h+=list.length?list.map(madeCard).join(''):`<div class="empty"><b>Nothing ready to post</b>Watch a video in Approved and press "Use this one".</div>`}
+  // keep already-loaded video players across re-renders, so a db update does not reload every video
+  const oldV={};v.querySelectorAll('video[data-k]').forEach(x=>oldV[x.dataset.k]=x);
+  v.innerHTML=h;
+  v.querySelectorAll('video[data-k]').forEach(n=>{const o=oldV[n.dataset.k];if(o&&o.getAttribute('src')===n.getAttribute('src'))n.replaceWith(o)});
+  Object.entries(vals).forEach(([k,val])=>{const e=document.getElementById(k);if(e)e.value=val});
+  if(keep){const e=document.getElementById(keep);if(e)e.focus()}
+  drawBoards()}
+function srcsList(i){return (i.sources||[]).length?`<p class="hint" style="margin:8px 0 0">Sources</p><ul class="src">${i.sources.map(s=>`<li><a href="${esc(s.url)}" target="_blank" rel="noopener">${esc(s.title||s.url)}</a></li>`).join('')}</ul>`:''}
+function projectCard(p){const its=ideas.filter(i=>i.projectId===p.id),fresh=its.filter(i=>st(i)==='new').sort((a,b)=>(a.rank||9)-(b.rank||9));
+  const nA=its.filter(i=>st(i)==='approved').length,nM=its.filter(i=>['made','posted'].includes(st(i))).length,j=lastPJob(p.id),run=j&&['queued','working'].includes(j.state),k='P|'+p.id;
+  return `<section class="box proj" data-pid="${esc(p.id)}"><div class="meta"><span class="pill inp">Input</span><span>${esc(String(p.createdAt||'').slice(0,10))}</span><span>· ${its.length} idea${its.length===1?'':'s'}${nA?` · ${nA} approved`:''}${nM?` · ${nM} made`:''}</span></div>
+  <h2>${esc(pTitle(p))}</h2>${p.query?`<div class="inq">${esc(p.query)}</div>`:''}
+  ${(p.media||[]).length||upBusy[k]?`<div class="mstrip">${(p.media||[]).map((m,x)=>mediaItem(m,canWrite?{remove:k+'|'+x,voice:k+'|'+x,voOn:p.voiceover===x}:{})).join('')}${upBusy[k]?`<div class="mi up"><span class="spin"></span></div>`:''}</div>`:''}
+  ${mErr[k]?`<p class="err">${esc(mErr[k])}</p>`:''}${j&&j.state!=='done'?jobHtml(j):j?`<p class="hint">Last run: ${esc(j.message||'done')}</p>`:''}
+  ${fresh.length?`<p class="opts-h">Ideas from this input — watch the scenes, then approve one</p><div class="opts">${fresh.map(ideaCard).join('')}</div>`:run?'':`<p class="hint">No open ideas here. Develop more below.</p>`}
+  <label class="hint" for="steer-${esc(p.id)}" style="display:block;margin-top:12px">Steer the next ideas (optional)</label>
+  <input type="text" id="steer-${esc(p.id)}" placeholder="e.g. funnier, for small business owners, as a step-by-step">
+  <div class="row"><button class="btn go" data-pact="develop" ${canWrite&&mcp&&!run?'':'disabled'}>Develop 3 more</button>
+   ${assets&&canWrite?`<button class="btn addm" data-addmedia="${esc(k)}" ${upBusy[k]?'disabled':''}>＋ Add to this input</button>`:''}<button class="btn ghost" data-pact="close" ${canWrite?'':'disabled'}>Remove project</button></div>${nA||nM?`<p class="hint">Removing this project keeps its approved and made videos.</p>`:''}</section>`}
+function secs(sb){return Math.round(sb.scenes.reduce((a,s)=>a+Math.max(1.5,(s.narration||'').split(/\s+/).length*.36+.3),0))}
+function stripHtml(i,tight){const sb=i.storyboard;return `<div class="strip${tight?' tight':''}" data-board="${esc(i.id)}">${sb.scenes.map((s,k)=>`<div class="fr"><div class="fw" data-scene="${k}" title="Tap to play"></div><div class="fn"><span>Scene ${k+1}</span><span>▶</span></div><div class="fv">${esc(s.narration)}</div></div>`).join('')}${sb.thumbnail?`<div class="fr"><div class="fw" data-thumb="1"></div><div class="fn"><span>Thumbnail</span></div></div>`:''}</div>`}
+function ideaCard(i){const sb=i.storyboard,b=busy[i.id],q=drawQ.includes(i.id),pim=mediaOf(i).map((m,k)=>({m,k})).filter(x=>x.m.kind==='image');
+  return `<article class="box" data-id="${esc(i.id)}"><div class="meta">${i.angle?`<span class="pill angle">${esc(i.angle)}</span>`:''}${sb&&sb.flow&&FLOWS[sb.flow]?`<span class="pill pillar">${esc(FLOWS[sb.flow].name)}</span>`:''}${sb&&sb.brand&&sb.brand.name&&sb.brand.avatar===false?`<span class="pill inp">${esc(sb.brand.name)}</span>`:''}<span>${esc(i.fresh?'News from '+i.fresh:i.date||'')}</span></div>
+  <h3>${esc(i.title)}</h3><div class="hook">“${esc(i.hook)}”</div>${pOf(i)?'':cardMedia(i)}
+  ${b||q?`<div class="job working" role="status"><span class="spin"></span><span>${esc(b||'Waiting to draw the scenes…')}</span></div>`:''}
+  ${sb&&sb.scenes?stripHtml(i,1)+`<p class="hint">${sb.scenes.length} scenes · ${voiceOf(i)!=null?'your own voice':'about '+secs(sb)+' seconds'} · tap a picture to play it</p>`
+    :(b||q?'':`<div class="empty"><b>Scenes not drawn</b><button class="btn go" data-act="board" ${canWrite?'':'disabled'}>Draw the scenes</button></div>`)}
+  ${i.sbError?`<p class="err">${esc(i.sbError)}</p>`:''}
+  <details><summary>The words behind it</summary><p>${esc(i.story)}</p>${i.why?`<p class="why"><b>Why it can go viral:</b> ${esc(i.why)}</p>`:''}${i.caption?`<div class="cap">${esc(i.caption)}</div>`:''}${srcsList(i)}</details>
+  <label class="hint" for="ed-${esc(i.id)}" style="display:block;margin-top:10px">Change a scene (optional)</label>
+  <textarea id="ed-${esc(i.id)}" rows="2" placeholder="e.g. remove scene 4, make scene 2 use the jaw-dropped pose, add a scene showing the steps"></textarea>
+  <div class="row"><button class="btn" data-act="edit" ${canWrite&&!b?'':'disabled'}>Update scenes</button><button class="btn" data-act="reflow" ${canWrite&&!b?'':'disabled'}>New flow</button><select data-flow="${esc(i.id)}" aria-label="Flow for the new scenes"><option value="">Surprise me</option>${Object.entries(FLOWS).map(([k,f])=>`<option value="${k}">${esc(f.name)}</option>`).join('')}</select></div>
+  <div class="row" style="margin-top:10px;border-top:1px solid var(--line);padding-top:10px"><button class="btn dark" data-act="approve" ${canWrite&&mcp&&sb&&!b?'':'disabled'}>Approve → make the video</button>${pim.length?`<button class="btn" data-act="poster" ${canWrite&&mcp&&!b?'':'disabled'}>…as poster alive</button><button class="btn" data-act="comic" ${canWrite&&mcp&&!b?'':'disabled'}>…as comic reel</button>${pim.length>1?`<select data-pimg="${esc(i.id)}" aria-label="Main picture">${pim.map(x=>`<option value="${x.k}">${esc(x.m.name||'Photo '+(x.k+1))}</option>`).join('')}</select>`:''}`:''}</div>
+  <div class="row"><button class="btn ghost" data-act="regen" ${canWrite&&mcp?'':'disabled'}>Regenerate → 3 more like this</button><button class="btn ghost" data-act="remove" ${canWrite?'':'disabled'}>Remove</button></div>
+  ${pim.length?`<p class="hint" style="margin-top:6px"><b>Poster alive</b> cuts a finished poster into its own pieces. <b>Comic reel</b> cuts a person out of a photo and redraws them as a comic character. Both ignore the scenes above and take 15-25 minutes.</p>`:''}
+  ${!mcp?'<p class="hint">Allow "Claude Code Remote" for this page to build videos.</p>':''}</article>`}
+function boardCard(i){const sb=i.storyboard,vj=lastJob(i.id,['video','poster','comic']),kind=reelKind(i),run=vj&&['queued','working'].includes(vj.state),fail=vj&&vj.state==='failed';
+  const ready=!!(i.video&&i.video.url);
+  return `<article class="box" data-id="${esc(i.id)}"><div class="meta">${i.angle?`<span class="pill angle">${esc(i.angle)}</span>`:''}${i.posterAlive?`<span class="pill inp">Poster alive</span>`:''}${i.comicReel?`<span class="pill inp">Comic reel</span>`:''}</div>
+  <h3>${esc(i.title)}</h3><div class="hook">“${esc(i.hook)}”</div>
+  ${ready?`<video data-k="b-${esc(i.id)}" controls playsinline preload="${i.thumbnail&&i.thumbnail.url?'none':'metadata'}" src="${esc(i.video.url)}" ${i.thumbnail&&i.thumbnail.url?`poster="${esc(i.thumbnail.url)}"`:''}></video>
+    <p class="hint" style="text-align:center">${i.video.seconds?Math.round(i.video.seconds)+' seconds · ':''}watch it with sound before you use it</p>`
+   :`<div class="empty"><b>${run?'Building your video…':fail?'The build stopped':'Waiting to start'}</b>${run?'This takes a few minutes. You can leave this page and come back.':''}</div>
+     ${sb&&sb.scenes?`<p class="hint">The scenes it is building:</p>`+stripHtml(i,1):''}`}
+  ${busy[i.id]?`<div class="job working" role="status"><span class="spin"></span><span>${esc(busy[i.id])}</span></div>`:vj?jobHtml(vj):''}
+  ${!run&&(ready||fail)?`<label class="hint" for="ch-${esc(i.id)}" style="display:block;margin-top:12px">Change something before it goes to Made (optional)</label>
+  <textarea id="ch-${esc(i.id)}" rows="2" placeholder="e.g. remove the word POV, shorter hook, swap the last two scenes, slower voice"></textarea>`:''}
+  <div class="row">${!run&&(ready||fail)?`<button class="btn dark" data-act="change" ${canWrite&&mcp&&!busy[i.id]?'':'disabled'}>Apply changes → rebuild</button>`:''}
+   ${ready?`<button class="btn go" data-act="useit" ${canWrite?'':'disabled'}>Use this one → Made</button>`:''}</div>
+  <div class="row">${!run&&!ready&&!fail?`<button class="btn dark" data-act="video" ${canWrite&&mcp&&(sb||kind!=='video')?'':'disabled'}>Build the video</button>`:''}
+   ${!run&&(ready||fail)?`<button class="btn" data-act="rebuild" ${canWrite&&mcp?'':'disabled'}>${fail?'Try the build again':'Build it again'}</button>
+   <select data-nar="${esc(i.id)}" aria-label="Narrator voice">${NARRATORS.map(([v,n])=>`<option value="${v}" ${v===((pOf(i)||{}).narrator||16)?'selected':''}>${esc(n)}</option>`).join('')}</select>`:''}
+   <button class="btn ghost" data-act="unapprove" ${canWrite?'':'disabled'}>Not happy — back to ideas</button>${rmBtn(i)}</div>
+  ${!run&&(ready||fail)?`<p class="hint" style="margin-top:6px">Type a change and press <b>Apply changes</b>, or pick another narrator and press <b>Build it again</b>. ${kind==='video'?'It rebuilds this reel from its scenes (a few minutes).':'It rebuilds this '+(kind==='poster'?'poster alive':'comic')+' reel with your change (about 15-25 minutes).'}</p>`:''}</article>`}
+// two-tap confirm (pop-up dialogs can be blocked inside the page frame)
+function sure(btn){if(btn.dataset.sure)return true;const lab=btn.textContent;btn.dataset.sure='1';btn.textContent='Tap again to remove';btn.style.color='var(--red)';
+  setTimeout(()=>{if(btn.isConnected){delete btn.dataset.sure;btn.textContent=lab;btn.style.color=''}},4000);return false}
+const rmBtn=i=>`<button class="btn ghost" data-act="rmproj" ${canWrite?'':'disabled'}>Remove this video</button>`;
+// Remove a project from the Ideas tab: close it and drop only its unapproved ideas. Approved, made, ready and posted videos stay where they are.
+async function removeProject(pid,loneId){const p=projects.find(x=>x.id===pid),its=(pid?ideas.filter(i=>i.projectId===pid):ideas.filter(i=>i.id===loneId)).filter(i=>st(i)==='new');
+  const live=its;
+  for(const j of Object.values(jobs))if(j.state==='scheduled'&&its.some(i=>i.id===j.ideaId))await db.doc('jobs/'+j.id).update({state:'cancelled',message:'Schedule cancelled'});
+  for(const i of live)await db.doc('ideas/'+i.id).update({status:'skipped',schedule:null});
+  if(p)await db.doc('projects/'+pid).update({status:'closed'});return true}
+const reelKind=i=>i.posterAlive?'poster':i.comicReel?'comic':'video';
+function defWhen(){const d=new Date();d.setDate(d.getDate()+1);d.setHours(9,0,0,0);const z=n=>String(n).padStart(2,'0');return `${d.getFullYear()}-${z(d.getMonth()+1)}-${z(d.getDate())}T09:00`}
+function madeCard(i){const pj=lastJob(i.id,['post','schedule']),p=i.posted||{};const posting=pj&&['queued','working'].includes(pj.state),sched=pj&&pj.state==='scheduled';
+  return `<article class="box" data-id="${esc(i.id)}"><h3>${esc(i.title)}</h3><div class="made-grid">
+  <div>${i.video&&i.video.url?`<video data-k="m-${esc(i.id)}" controls playsinline preload="${i.thumbnail&&i.thumbnail.url?'none':'metadata'}" src="${esc(i.video.url)}" ${i.thumbnail&&i.thumbnail.url?`poster="${esc(i.thumbnail.url)}"`:''}></video>`:'<div class="empty">Video missing</div>'}</div>
+  <div style="min-width:0">${i.thumbnail&&i.thumbnail.url?`<p class="hint" style="margin:0 0 4px">Thumbnail</p><img class="thumb" src="${esc(i.thumbnail.url)}" alt="Thumbnail for ${esc(i.title)}">`:''}
+   <label class="hint" for="cap-${esc(i.id)}" style="display:block;margin-top:8px">Caption</label><textarea id="cap-${esc(i.id)}" rows="7" data-cap="${esc(i.id)}">${esc(i.caption||'')}</textarea><div class="hint" id="cs-${esc(i.id)}"></div>
+   <div class="plat" role="group" aria-label="Where to post">
+    ${['instagram','facebook','youtube','tiktok'].map(k=>`<label><input type="checkbox" data-plat="${k}" ${k!=='tiktok'?'checked':''}> ${{instagram:'Instagram',facebook:'Facebook Page',youtube:'YouTube Shorts',tiktok:'TikTok'}[k]}</label>`).join('')}</div>
+   <p class="hint">TikTok asks you to confirm in its own form inside the agent's run.</p>
+   <div class="row"><button class="btn go" data-act="post" ${canWrite&&mcp&&!posting?'':'disabled'}>${st(i)==='posted'?'Post again':'Post now'}</button>${dls&&i.video&&i.video.url?`<button class="btn" data-act="dl">⬇ Download video</button>${i.thumbnail&&i.thumbnail.url?`<button class="btn ghost" data-act="dlthumb">⬇ Thumbnail</button>`:''}`:''}<button class="btn ghost" data-act="remake" ${canWrite?'':'disabled'}>Back to the video</button>${rmBtn(i)}</div>
+   <div class="sched">${sched?`<div class="row"><button class="btn ghost" data-act="unschedule" ${canWrite?'':'disabled'}>Cancel schedule</button></div>`
+    :`<label class="hint" for="when-${esc(i.id)}" style="display:block">Or schedule it</label>
+   <div class="row" style="margin-top:4px"><input type="datetime-local" id="when-${esc(i.id)}" value="${defWhen()}"><button class="btn dark" data-act="schedule" ${canWrite&&!posting?'':'disabled'}>📅 Schedule</button></div>
+   <p class="hint">Posts to the ticked platforms within the hour after this time, with the caption as it is then.</p>`}</div>
+   ${pj?jobHtml(pj):''}<p class="err" id="se-${esc(i.id)}"></p>
+   ${Object.keys(p).length?`<p class="posted">Posted: ${p.instagram&&p.instagram.url?`<a href="${esc(p.instagram.url)}" target="_blank" rel="noopener">Instagram</a> `:''}${p.facebook&&p.facebook.url?`<a href="${esc(p.facebook.url)}" target="_blank" rel="noopener">Facebook</a> `:''}${p.youtube&&p.youtube.url?`<a href="${esc(p.youtube.url)}" target="_blank" rel="noopener">YouTube</a> `:p.youtube&&p.youtube.status?`<span class="hint">YouTube: ${esc(p.youtube.status)}</span> `:''}${p.tiktok?`<span class="hint">TikTok: ${esc(p.tiktok.status||p.tiktok.url||'')}</span>`:''}</p>`:''}
+  </div></div></article>`}
+// Still frames for scene previews: one shared video grabs a picture per clip/time, so the page never opens dozens of video players at once (that crashed the tab).
+const stills={};let grabQ=[],grabbing=false;
+const skey=(id,t)=>id+'@'+(Math.round(t*10)/10);
+function wantStill(id,t){const k=skey(id,t);if(k in stills||grabQ.some(g=>g.k===k))return;grabQ.push({id,t,k});pumpGrab()}
+async function pumpGrab(){if(grabbing)return;grabbing=true;
+  try{while(grabQ.length){const id=grabQ[0].id,mine=grabQ.filter(g=>g.id===id);grabQ=grabQ.filter(g=>g.id!==id);
+    const v=document.createElement('video');v.muted=true;v.playsInline=true;v.preload='auto';
+    try{await new Promise((res,rej)=>{v.onloadeddata=res;v.onerror=rej;setTimeout(rej,25000);v.src='/_blob/'+id});
+      const W=270,H=Math.round(W*(v.videoHeight/v.videoWidth))||480,c=document.createElement('canvas');c.width=W;c.height=H;const g=c.getContext('2d');
+      for(const q of mine){const t=Math.min(q.t,Math.max(0,(v.duration||1)-.15));await new Promise(res=>{const to=setTimeout(res,6000);v.onseeked=()=>{clearTimeout(to);res()};v.currentTime=t});
+        try{g.drawImage(v,0,0,W,H);stills[q.k]=c.toDataURL('image/jpeg',.8)}catch(_){stills[q.k]=''}}}
+    catch(_){mine.forEach(q=>{stills[q.k]=''})}
+    v.removeAttribute('src');v.load();soon()}}
+  finally{grabbing=false}}
+// media list for a still preview: clips become their still picture (or a placeholder until it is ready)
+function stillMedia(i,pick){return mediaOf(i).map((m,k)=>{if(m.kind!=='video')return{kind:m.kind,url:'/_blob/'+m.id};
+  const t=Math.max(.1,pick(k));const u=stills[skey(m.id,t)];if(u===undefined)wantStill(m.id,t);return u?{kind:'image',url:u,image:u}:{kind:'audio'}})}
+function drawBoards(){document.querySelectorAll('[data-board]').forEach(strip=>{const i=ideas.find(x=>x.id===strip.dataset.board);if(!i||!i.storyboard)return;
+  strip.querySelectorAll('.fw').forEach(w=>{const s=document.createElement('div');s.className='cs-st';w.appendChild(s);
+    if(w.dataset.thumb){const th=i.storyboard.thumbnail||{};DESK.thumb(s,th,{media:stillMedia(i,k=>k===(th.media|0)?(Number(th.start)||.5):.5),brand:i.storyboard.brand})}
+    else{const sc=i.storyboard.scenes[+w.dataset.scene];DESK.frame(s,sc,1.8,{captions:false,media:stillMedia(i,k=>sc.kind==='media'&&sc.data&&(sc.data.media|0)===k?(Number(sc.data.start)||0):.5),brand:i.storyboard.brand})}})})}
+let playing=null;
+function play(w,sc,md,br){if(playing)cancelAnimationFrame(playing.raf);const s=w.querySelector('.cs-st');const t0=performance.now();const dur=Math.max(1.6,(sc.narration||'').split(/\s+/).length*.36+.4);
+  const words=(sc.narration||'').split(/\s+/).map((x,k,a)=>({w:x.replace(/[.,!?]/g,''),s:k*(dur-.3)/a.length}));
+  const step=()=>{const t=(performance.now()-t0)/1000;DESK.frame(s,sc,Math.min(t,dur),{dur,words,media:md,brand:br,live:t<dur});if(t<dur)playing={raf:requestAnimationFrame(step)};else{DESK.frame(s,sc,1.8,{captions:false,media:md,brand:br});playing=null}};step()}
+// ---------- storyboard via Claude ----------
+// Storyboard flows: each fresh storyboard picks a different structure so reels don't all follow one pattern.
+const FLOWS={
+ coldopen:{name:'Cold open',how:'Open in the middle of the most striking moment (best clip or photo, no intro). Scene 2-3 rewind: "Here is how it started." Build back up to that moment, then the payoff. Short closing line.',n:[9,13]},
+ countdown:{name:'Countdown list',how:'Hook promises a number ("3 things..."). Then numbered points counting DOWN (3, 2, 1), each point 2 scenes: a bigtext/chip number then the proof shot. Best point last. Tiny CTA.',n:[9,13]},
+ twist:{name:'Problem, twist, fix',how:'Start with a relatable pain (POV or question). Make it worse for 2-3 scenes. A twist scene (stamp or bigtext) flips it. Show the fix in action, then proof or result.',n:[10,14]},
+ beforeafter:{name:'Before / after',how:'First half is all "before" (the old way, the mess, the struggle). One hard switch scene (versus or stamp "AFTER"). Second half is the "after" with the result. Mirror the shots so the change is obvious.',n:[8,12]},
+ pov:{name:'POV story',how:'First person, told in order like a mini vlog: every headline starts as "POV:" or a time stamp chip (e.g. 9:00 AM). Mostly real shots, few graphics. End on a punchline or a small win, not a lecture.',n:[8,12]},
+ loop:{name:'Question loop',how:'Scene 1 asks a question the viewer wants answered. Do NOT answer it until the last 2 scenes. In between, give 2-3 clues or teasers ("Clue 1..."). Big reveal near the end, the last line connects back to the first scene so it loops.',n:[9,13]},
+ myth:{name:'Myth vs truth',how:'2-3 rounds of "Myth:" then "Truth:" (versus or stamp FAKE/TRUE), each truth backed by a shot or fact. Finish with the one thing to remember.',n:[9,13]},
+ montage:{name:'Fast montage',how:'Very fast: short scenes of 1-3 words narration each, mostly full-screen shots back to back, punchy headlines. One statement line in the middle, one CTA at the end. Total 15-25 seconds.',n:[8,11]},
+ ad:{name:'Mini ad',how:'For promoting a product, service or offer: hook on the customer\'s problem, show the product/service in use (real shots), 1 scene with the offer or price exactly as given, 1 scene with how to get it, CTA that tells them what to do (book, DM, visit, link in bio).',n:[8,12]}};
+const CTAS=['Follow for more.','Save this for later.','Send this to a friend who needs it.','Comment your answer below.','Try it and tell me.','DM to book.','Link in bio.','Which one are you? Comment below.'];
+function brandInfo(i){const p=pOf(i);return `INPUT FROM THE CREATOR (what this reel is for)\n${p&&p.query?'They wrote: '+p.query+'\n':''}${p&&p.title?'Project: '+p.title+'\n':''}${p&&p.summary?'Summary: '+p.summary+'\n':''}`}
+function pickFlow(i,want){if(want&&FLOWS[want])return want;const prev=i.storyboard&&i.storyboard.flow;const isAd=/promo|promot|offer|sale|discount|book|price|client|shop|service|app\b|product/i.test([(pOf(i)||{}).query,i.angle,i.title,i.note].join(' '));
+  let keys=Object.keys(FLOWS).filter(k=>k!==prev&&(k!=='ad'||isAd));const a=String(i.angle||'').toLowerCase();
+  const fit={'step':'countdown','myth':'myth','before':'beforeafter','pov':'pov','story':'coldopen','mistake':'countdown','hot take':'twist','tip':'montage','proof':'beforeafter','result':'beforeafter','scam':'twist','news':'loop','ad':'ad','promo':'ad'};
+  const hit=Object.entries(fit).find(([w])=>a.includes(w));if(hit&&hit[1]!==prev&&Math.random()<.5&&keys.includes(hit[1]))return hit[1];
+  return keys[Math.floor(Math.random()*keys.length)]||'twist'}
+function SPEC(i,flowKey){const ms=mediaOf(i).filter(m=>m.kind!=='audio'),F=FLOWS[flowKey],hasM=ms.length>0;
+  const cta=CTAS.sort(()=>Math.random()-.5).slice(0,3).map(c=>'"'+c+'"').join(', ');
+  return `You design storyboards for short vertical reels (Instagram/TikTok/Facebook) made by the creator who owns this desk. Their own channel is ${CONFIG.handle} (${CONFIG.brand}${CONFIG.avatar&&CONFIG.avatarDesc?', presented by '+CONFIG.avatarDesc:''}${CONFIG.audience?'; audience: '+CONFIG.audience:''}). They ALSO make reels for other brands and businesses (clients, their own apps or products).
+Reply with ONLY JSON: {"flow":"${flowKey}","brand":{...},"scenes":[...],"thumbnail":{...}}.
+
+STEP 1 - WHOSE REEL IS THIS? Read the INPUT and IDEA below.
+- If it promotes or is about a specific business, shop, service, product or app (e.g. a cleaning company promo, their own app), the reel belongs to THAT brand: "brand":{"name":"the brand name","handle":"their @handle if given, else the brand name, or \\"\\" if none","avatar":false}. Do not mention ${CONFIG.brand}, do not use avatar poses (pose null everywhere), and the CTA fits that business.
+- Otherwise it is a ${CONFIG.brand} reel: "brand":{"name":"${CONFIG.brand}","handle":"${CONFIG.handle}","avatar":${CONFIG.avatar}}.
+- Optional in brand: "accent":"#hex" (the colour of highlighted words; pick from the brand's look if a photo shows it) and "bg":"a CSS colour or gradient" for graphic scenes. Leave them out for ${CONFIG.brand}.
+
+STEP 2 - FLOW for this storyboard: ${F.name}. ${F.how}
+Follow this structure; it must not look like a generic explainer. ${F.n[0]} to ${F.n[1]} scenes, 15-40 seconds total.
+
+Each scene: {"headline":"2-5 words, wrap ONE key word in *stars* to highlight it","narration":"what the narrator says, max 12 words, simple spoken English","kind":KIND,"data":{...},"pose":POSE or null,"posePos":"left"|"right","chip":"optional tiny label like a date or time, or omit"}.
+KIND and its data:
+- "media": {"media":index from MEDIA,"fit":"full"|"cover"|"contain","label":"optional 2-4 words","start":seconds into the clip (clips only),"sound":"narration"|"original","seconds":1-12 (only with sound original)}. "full" = the shot fills the whole screen (best for clips and real photos). "contain" for screenshots, posters or text-heavy images so nothing is cut. "original" plays the clip's own sound: then narration is "" unless a short line over it helps.
+- "icon": {"emoji":"one emoji","label":"optional 2-4 words","motion":"drop"|"pop"|"spin"}
+- "phone": {"lines":["up to 3 short screen lines"],"bubble":"optional short speech bubble"}
+- "search": {"text":"what is typed","fix":"optional corrected text"}
+- "chat": {"text":"a message, max 15 words"}
+- "counter": {"value":number,"prefix":"optional e.g. RM or S$","suffix":"optional","label":"2-5 words"}
+- "checklist": {"items":["2-5 short items"]}
+- "cards": {"items":["3-5 one-word labels"],"highlight":index or omit}
+- "stamp": {"emoji":"one emoji","text":"ONE WORD like BLOCKED, FAKE, FREE, AFTER"}
+- "quote": {"text":"a real quote from the facts only","by":"who"}
+- "versus": {"left":{"emoji":"","text":"2-3 words"},"right":{"emoji":"","text":"2-3 words"}}
+- "bigtext": {"text":"a short number or word, max 8 characters"}
+- "table": {"cols":["","A","B"],"rows":[["label","x","y"]]} (max 4 rows)
+- "steps": {"items":[{"emoji":"","text":"max 6 words"}]} (2-4 items)
+POSE is one of: ${DESK.POSES.join(', ')}.
+${hasM?`MEDIA FIRST: The creator gave their own photos/clips (listed under MEDIA). They are the main material of this reel.
+- At least 70% of the scenes are "media" scenes, and EVERY listed photo and clip is used at least once.
+- Prefer "fit":"full". Cut long clips into several shots with different "start" values (stay inside the clip length) instead of switching to graphics.
+- Use graphic kinds only to add a fact the shots cannot show (a price, a number, a step list), and never two graphic scenes in a row.
+- The scene 1 hook is a media scene with his strongest shot.
+- ${'Avatar'}: at most 2 scenes (none if brand avatar is false).`:`No photos or clips were given: build the reel from graphic kinds. Vary the kinds; do not use the same kind twice in a row. Avatar (only if brand avatar is true): 2 to 5 scenes, each a different fitting pose, alternating left/right; other scenes pose null.`}
+Use ONLY facts given below (prices, dates, names exactly as given); say "allegedly" for charges; no made-up numbers, quotes or offers.
+Ending: pick a CTA that fits this flow and brand, e.g. ${cta} or the business's own action. Do not always end with "Follow for more."
+thumbnail: {"headline":"4-7 words, *one* highlighted word, curiosity","emoji":"one emoji","pose":POSE or "none" (must be "none" if brand avatar is false),"sticker":"2-4 words with one *highlighted* word","media":index of their best photo/clip (use it whenever MEDIA exists),"full":true to fill the thumbnail with that shot,"start":seconds for a clip}`}
+function mediaRules(i){const ms=mediaOf(i);if(!ms.length)return'';
+  const list=ms.map((m,k)=>`[${k}] ${m.kind==='audio'?'voice note (not a picture, cannot be a media scene)':m.kind==='video'?'video clip':'photo'}${m.seconds?' '+m.seconds+'s':''} "${m.name||''}"${m.note?' - '+m.note:''}${m.transcript?' | says: '+m.transcript:''}`).join('\n');
+  const vi=voiceOf(i),vo=vi!=null&&ms[vi]?ms[vi]:null;
+  return `\n\nMEDIA THE CREATOR ADDED:\n${list}`+
+   (vo?`\n\nVOICEOVER: The creator narrates this reel themselves with [${vi}]. ${vo.transcript?`Their recording says: "${vo.transcript}"\nThe narration of all scenes, read in order, must be exactly their words split across the scenes (same words, same order, nothing added or dropped; 3-12 words per scene). Ignore the scene count, length and CTA rules; their words decide the length. Every scene needs narration. Do not use sound "original".`:'The transcript is not ready yet: write narration as usual; the words will be replaced by his recording.'}`:'')}
+function ideaFacts(i){return `${brandInfo(i)}\nIDEA\nTitle: ${i.title}\nHook: ${i.hook}${i.angle?'\nAngle: '+i.angle:''}\nFacts: ${i.story}\n${i.note?'Creator note: '+i.note:''}${mediaRules(i)}`}
+function clean(sb,flowKey){if(!sb||!Array.isArray(sb.scenes)||!sb.scenes.length)throw new Error('no scenes');
+  const b=sb.brand&&typeof sb.brand==='object'?sb.brand:{};const brand={name:String(b.name||CONFIG.brand).slice(0,60),handle:b.handle==null?CONFIG.handle:String(b.handle).slice(0,40),avatar:CONFIG.avatar&&b.avatar!==false};
+  if(/^#[0-9a-f]{3,8}$/i.test(b.accent||''))brand.accent=b.accent;if(b.bg&&/^[#a-z0-9(),.%\s-]+$/i.test(b.bg)&&String(b.bg).length<160)brand.bg=String(b.bg);
+  sb.scenes=sb.scenes.slice(0,20).map(s=>({headline:String(s.headline||''),narration:String(s.narration||''),kind:DESK.KINDS.includes(s.kind)?s.kind:'icon',data:s.data&&typeof s.data==='object'?s.data:{emoji:'✨'},pose:brand.avatar&&DESK.POSES.includes(s.pose)?s.pose:null,posePos:s.posePos==='right'?'right':'left',...(s.chip?{chip:String(s.chip).slice(0,24)}:{})}));
+  sb.thumbnail=sb.thumbnail&&typeof sb.thumbnail==='object'?sb.thumbnail:{headline:sb.scenes[0].headline,emoji:'🤯',pose:brand.avatar?'jaw-dropped':'none'};
+  if(!brand.avatar)sb.thumbnail.pose='none';
+  return {flow:FLOWS[sb.flow]?sb.flow:flowKey,brand,scenes:sb.scenes,thumbnail:sb.thumbnail}}
+async function makeBoard(i,instruction,want){if(!sample){alert0(i.id,'This page cannot ask Claude here. Open it in claude.ai while signed in.');return}
+  const flowKey=instruction&&i.storyboard&&FLOWS[i.storyboard.flow]?i.storyboard.flow:instruction?(want||'twist'):pickFlow(i,want);
+  busy[i.id]=instruction?'Updating the storyboard…':'Drawing a '+FLOWS[flowKey].name.toLowerCase()+' storyboard…';render();
+  try{const prompt=instruction?`${SPEC(i,flowKey)}\n\n${ideaFacts(i)}\n\nCURRENT STORYBOARD JSON:\n${JSON.stringify(i.storyboard)}\n\nThe creator wants exactly these changes: ${instruction}\nDo only what they asked, in the way they described it. Do not add extra scenes, ideas, angles or wording they did not ask for, and do not reinterpret or expand his request. Leave every other scene exactly as it is (same text, kind, data and pose), and keep the current flow and brand unless they asked to change them. Reply with the full updated JSON.`:`${SPEC(i,flowKey)}\n\n${ideaFacts(i)}`;
+    const sb=clean(await sample.json(prompt,{modelTier:'default'}),flowKey);
+    sb.voice=(pOf(i)||{}).narrator||16;
+    await db.doc('ideas/'+i.id).update({storyboard:sb,sbError:''});return true}
+  catch(e){await db.doc('ideas/'+i.id).update({sbError:e&&e.code==='not_granted'?'You turned off "Ask Claude" for this page. Turn it on in the page permissions to draw storyboards.':e&&e.code==='rate_limited'?'Claude is busy right now. Try again in a minute.':'The storyboard could not be drawn. Press Update storyboard to try again.'}).catch(()=>{});return false}
+  finally{delete busy[i.id];render()}}
+function queueBoards(){if(!sample||!canWrite)return;
+  ideas.filter(i=>st(i)==='new'&&!i.storyboard&&!i.sbError&&!busy[i.id]).forEach(i=>{if(!drawQ.includes(i.id))drawQ.push(i.id)});
+  pumpQ()}
+async function pumpQ(){if(drawing||!drawQ.length)return;drawing=true;
+  const id=drawQ[0];const i=ideas.find(x=>x.id===id);
+  try{if(i&&!i.storyboard&&st(i)==='new')await makeBoard(i)}catch(_){}
+  drawQ=drawQ.filter(x=>x!==id);drawing=false;render();pumpQ()}
+function alert0(id,msg){db.doc('ideas/'+id).update({sbError:msg}).catch(()=>{})}
+// ---------- agent jobs ----------
+async function fire(job){const id=job.type+'-'+Date.now();const doc={...job,state:'queued',at:new Date().toISOString(),message:''};
+  try{await db.doc('jobs/'+id).set(doc)}catch(e){return}
+  try{await mcp.callTool(SERVER,'fire_trigger',{trigger_id:TRIGGER,text:JSON.stringify({...job,jobId:id})})}
+  catch(e){await db.doc('jobs/'+id).update({state:'failed',message:e&&e.code==='not_granted'?'You did not allow Claude Code Remote for this page.':'Could not start the agent ('+(e&&e.code||'error')+'). Try again.'}).catch(()=>{})}}
+document.addEventListener('click',async e=>{
+  const w=e.target.closest('.fw[data-scene]');if(w){const i=ideas.find(x=>x.id===w.closest('[data-board]').dataset.board);play(w,i.storyboard.scenes[+w.dataset.scene],mediaOpts(i),i.storyboard.brand);return}
+  const pv=e.target.closest('[data-play]');if(pv){playVoice(pv,pv.dataset.play);return}
+  const am=e.target.closest('[data-addmedia]');if(am){if(assets&&db)addMedia(am.dataset.addmedia);return}
+  const pa=e.target.closest('[data-pact]');if(pa&&db){const sec=pa.closest('[data-pid]'),pid=sec.dataset.pid;pa.disabled=true;
+    try{if(pa.dataset.pact==='close'){if(!sure(pa)){pa.disabled=false;return}await removeProject(pid)}
+     else{const inp=document.getElementById('steer-'+pid),note=(inp&&inp.value||'').trim();if(inp)inp.value='';await fire({type:'develop',projectId:pid,count:3,note})}}catch(_){pa.disabled=false}return}
+  const rm=e.target.closest('[data-rmmedia]');if(rm){const r=rm.dataset.rmmedia;if(r[0]==='p'&&!r.includes('|')){pending.splice(+r.slice(1),1);render();return}
+    if(r.startsWith('P|')){const [,pid,x]=r.split('|');const pr=projects.find(q=>q.id===pid);if(!pr||!db)return;const ms=(pr.media||[]).slice();ms.splice(+x,1);const up={media:ms};
+      if(typeof pr.voiceover==='number')up.voiceover=pr.voiceover===+x?null:pr.voiceover>+x?pr.voiceover-1:pr.voiceover;rm.disabled=true;try{await db.doc('projects/'+pid).update(up)}catch(_){rm.disabled=false}return}
+    const [iid,k]=r.split('|');const i=ideas.find(x=>x.id===iid);if(!i||!db)return;const ms=(i.media||[]).slice();ms.splice(+k,1);const up={media:ms};
+    if(typeof i.voiceover==='number')up.voiceover=i.voiceover===+k?null:i.voiceover>+k?i.voiceover-1:i.voiceover;rm.disabled=true;try{await db.doc('ideas/'+iid).update(up)}catch(_){rm.disabled=false}return}
+  if(e.target.id==='findBtn'){const q=($('#q').value||'').trim(),n=3,nar=+($('#nar')||{}).value||16;e.target.disabled=true;
+    const pid='p-'+Date.now(),vi=pending.findIndex(m=>m.voiceover),media=pending.map(({voiceover,...m})=>m);
+    try{await db.doc('projects/'+pid).set({createdAt:new Date().toISOString(),query:q,media,voiceover:vi>=0?vi:null,narrator:nar,count:n,status:'open',title:''})}catch(_){e.target.disabled=false;return}
+    const job={type:'find',projectId:pid,query:q,count:n,narrator:nar};if(media.length)job.media=media;
+    await fire(job);$('#q').value='';pending=[];render();return}
+  const b=e.target.closest('[data-act]');if(!b||!db)return;const card=b.closest('[data-id]');const i=ideas.find(x=>x.id===card.dataset.id);if(!i)return;const act=b.dataset.act;b.disabled=true;
+  try{
+   if(act==='approve'){await db.doc('ideas/'+i.id).update({status:'approved',approvedAt:new Date().toISOString()});await fire({type:'video',ideaId:i.id});tab='approved';document.querySelectorAll('.tab').forEach(x=>x.setAttribute('aria-pressed',x.dataset.t==='approved'));render()}
+   else if(act==='useit'){await db.doc('ideas/'+i.id).update({status:'ready'});tab='made';document.querySelectorAll('.tab').forEach(x=>x.setAttribute('aria-pressed',x.dataset.t==='made'));render()}
+   else if(act==='regen'){const ta=document.getElementById('ed-'+i.id),extra=(ta&&ta.value||'').trim();
+     await db.doc('ideas/'+i.id).update({status:'skipped'});
+     await fire({type:'develop',projectId:i.projectId||null,count:3,fromIdea:i.id,note:(extra?extra+'. ':'')+'Take the idea "'+(i.title||'')+'" (angle: '+(i.angle||'')+') and develop 3 new versions of that same subject, each with a different angle and hook.'})}
+   else if(act==='remove'){await db.doc('ideas/'+i.id).update({status:'skipped'})}
+   else if(act==='unapprove'){await db.doc('ideas/'+i.id).update({status:'new'})}
+   else if(act==='board'){makeBoard(i)}
+   else if(act==='reflow'){const sel=card.querySelector('[data-flow]');makeBoard(i,null,sel&&sel.value||'')}
+   else if(act==='edit'){const ta=document.getElementById('ed-'+i.id);const t=(ta.value||'').trim();if(!t){ta.focus();b.disabled=false;return}ta.value='';makeBoard(i,t)}
+   else if(act==='video'){const sel=card.querySelector('[data-nar]');
+     if(sel){const nv=+sel.value,p=pOf(i);
+       if(p&&p.narrator!==nv)await db.doc('projects/'+p.id).update({narrator:nv});
+       if(i.storyboard&&i.storyboard.voice!==nv)await db.doc('ideas/'+i.id).update({storyboard:{...i.storyboard,voice:nv}})}
+     await fire({type:'video',ideaId:i.id})}
+   else if(act==='change'||act==='rebuild'){const sel=card.querySelector('[data-nar]'),ta=document.getElementById('ch-'+i.id),note=act==='change'?(ta&&ta.value||'').trim():'';
+     if(act==='change'&&!note){ta&&ta.focus();b.disabled=false;return}
+     if(sel){const nv=+sel.value,p=pOf(i);
+       if(p&&p.narrator!==nv)await db.doc('projects/'+p.id).update({narrator:nv});
+       if(i.storyboard&&i.storyboard.voice!==nv)await db.doc('ideas/'+i.id).update({storyboard:{...i.storyboard,voice:nv}})}
+     if(ta)ta.value='';const kind=reelKind(i);
+     if(kind==='video'){if(note){const ok=await makeBoard(i,note);if(!ok){b.disabled=false;return}}await fire({type:'video',ideaId:i.id})}
+     else{const ims=mediaOf(i).map((m,k)=>({m,k})).filter(x=>x.m.kind==='image');const mi=i.kit&&typeof i.kit.media==='number'?i.kit.media:(ims[0]||{k:0}).k;
+       const keep='This '+(kind==='poster'?'poster alive':'comic')+' reel already exists and the creator only wants it rebuilt. Keep the same story, scenes, order and wording as the current reel'+(i.kit&&i.kit.files?' (its cut.py, script.json and scenes.js are saved on the idea under kit.files: reuse them)':'')+', with the narrator voice now set on the project.';
+       await fire({type:kind,ideaId:i.id,media:mi,note:note?keep+' Change only this: '+note:keep})}}
+   else if(act==='poster'||act==='comic'){const ta=document.getElementById('ed-'+i.id),note=(ta&&ta.value||'').trim(),sel=card.querySelector('[data-pimg]');const ims=mediaOf(i).map((m,k)=>({m,k})).filter(x=>x.m.kind==='image');
+     if(ta)ta.value='';if(st(i)==='new')await db.doc('ideas/'+i.id).update({status:'approved',approvedAt:new Date().toISOString()});
+     await fire({type:act,ideaId:i.id,media:sel?+sel.value:ims[0].k,note});
+     tab='approved';document.querySelectorAll('.tab').forEach(x=>x.setAttribute('aria-pressed',x.dataset.t==='approved'));render()}
+   else if(act==='remake'){await db.doc('ideas/'+i.id).update({status:'made'});tab='approved';document.querySelectorAll('.tab').forEach(x=>x.setAttribute('aria-pressed',x.dataset.t==='approved'));render()}
+   else if(act==='dl'||act==='dlthumb'){const src=act==='dl'?i.video:i.thumbnail;const ext=act==='dl'?'mp4':'jpg';
+     const name=(String(i.title||'reel').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'').slice(0,60)||'reel')+'.'+ext;
+     const lab=b.textContent;b.textContent='Preparing…';
+     try{const r=await fetch(src.url);if(!r.ok)throw 0;await dls.save({filename:name,data:await r.blob()});b.textContent='Saved'}
+     catch(err){b.textContent=err&&err.code==='declined'?lab:'Could not save'}
+     setTimeout(()=>{b.textContent=lab;b.disabled=false},2500);return}
+   else if(act==='post'){const pl=[...card.querySelectorAll('[data-plat]:checked')].map(x=>x.dataset.plat);if(!pl.length){b.disabled=false;return}
+     const ta=document.getElementById('cap-'+i.id);if(ta&&ta.value!==i.caption)await db.doc('ideas/'+i.id).update({caption:ta.value});
+     await fire({type:'post',ideaId:i.id,platforms:pl})}
+   else if(act==='schedule'){const pl=[...card.querySelectorAll('[data-plat]:checked')].map(x=>x.dataset.plat),inp=document.getElementById('when-'+i.id),er=document.getElementById('se-'+i.id);
+     const t=inp&&inp.value?new Date(inp.value):null;
+     if(!pl.length){er.textContent='Tick at least one platform.';b.disabled=false;return}
+     if(!t||isNaN(t)||t.getTime()<Date.now()+10*60*1000){er.textContent='Pick a time at least 10 minutes from now.';b.disabled=false;return}
+     const ta=document.getElementById('cap-'+i.id);if(ta&&ta.value!==i.caption)await db.doc('ideas/'+i.id).update({caption:ta.value});
+     const id='schedule-'+Date.now(),postAt=t.toISOString();
+     await db.doc('jobs/'+id).set({type:'schedule',ideaId:i.id,platforms:pl,postAt,state:'scheduled',at:new Date().toISOString(),message:''});
+     await db.doc('ideas/'+i.id).update({schedule:{at:postAt,platforms:pl,jobId:id}})}
+   else if(act==='rmproj'){if(!sure(b)){b.disabled=false;return}for(const j of Object.values(jobs))if(j.state==='scheduled'&&j.ideaId===i.id)await db.doc('jobs/'+j.id).update({state:'cancelled',message:'Schedule cancelled'});
+     await db.doc('ideas/'+i.id).update({status:'skipped',schedule:null})}
+   else if(act==='unschedule'){const j=lastJob(i.id,['post','schedule']);if(j&&j.state==='scheduled')await db.doc('jobs/'+j.id).update({state:'cancelled',message:'Schedule cancelled'});
+     await db.doc('ideas/'+i.id).update({schedule:null})}
+  }catch(err){b.disabled=false}
+});
+document.addEventListener('change',async e=>{const v=e.target.dataset&&e.target.dataset.voice;if(v==null)return;
+  if(v[0]==='p'&&!v.includes('|')){const k=+v.slice(1);pending.forEach((m,j)=>{m.voiceover=j===k&&e.target.checked});render();return}
+  if(v.startsWith('P|')){const [,pid,x]=v.split('|');if(!db)return;try{await db.doc('projects/'+pid).update({voiceover:e.target.checked?+x:null})}catch(_){e.target.checked=!e.target.checked}return}
+  const [iid,k]=v.split('|');if(!db)return;try{await db.doc('ideas/'+iid).update({voiceover:e.target.checked?+k:null})}catch(_){e.target.checked=!e.target.checked}});
+const ct={};
+document.addEventListener('input',e=>{const id=e.target.dataset&&e.target.dataset.cap;if(!id||!db)return;clearTimeout(ct[id]);const v=e.target.value;
+  ct[id]=setTimeout(async()=>{try{await db.doc('ideas/'+id).update({caption:v});$('#cs-'+id).textContent='Caption saved'}catch{$('#cs-'+id).textContent='Could not save the caption'}},900)});
+// ---------- boot ----------
+let rt=null;function soon(){clearTimeout(rt);rt=setTimeout(()=>{const a=document.activeElement;if(a&&(a.tagName==='TEXTAREA'||(a.tagName==='INPUT'&&['text','datetime-local'].includes(a.type))))return soon();if([...document.querySelectorAll('#view video')].some(m=>!m.paused&&!m.ended&&!m.closest('.fw'))||(voiceNow&&!voiceNow.a.paused))return soon();render()},60)}
+(async()=>{
+  [db,mcp,sample,assets,dls]=await Promise.all([claude.use('db'),claude.use('mcp'),claude.use('sample'),claude.use('assets'),claude.use('downloads')]);
+  if(!db){$('#view').innerHTML='<div class="empty"><b>Sign in to use your desk</b>This page reads the ideas your agent saved.</div>';return}
+  try{const u=await claude.use('user');const w=u&&u.can?await u.can('data.write'):null;if(w===false)canWrite=false}catch{}
+  const t=setTimeout(()=>{$('#view').insertAdjacentHTML('afterbegin','<p class="err">Your desk could not be reached yet. Check your connection.</p>')},10000);
+  db.collection('ideas').onSnapshot(s=>{if(!s.metadata.fromCache)clearTimeout(t);ideas=s.docs.map(d=>({id:d.id,...d.data()}));soon();queueBoards()},()=>{clearTimeout(t);$('#view').innerHTML='<div class="empty"><b>Could not load your desk</b>Reload the page to try again.</div>'});
+  db.collection('projects').onSnapshot(s=>{projects=s.docs.map(d=>({id:d.id,...d.data()}));soon()},()=>{});
+  db.collection('jobs').orderBy('at','desc').limit(60).onSnapshot(s=>{jobs={};s.docs.forEach(d=>jobs[d.id]={id:d.id,...d.data()});soon()},()=>{});
+})();
+</script>
+
+</body></html>

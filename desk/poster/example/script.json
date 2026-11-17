@@ -1,0 +1,19 @@
+{
+ "voice": 3, "speed": 1.08, "gap": 0.28, "music": true, "bpm": 104,
+ "lexicon": {"onwards": "ˈ ɔ n w ə ɹ d z", "whatsapp": "w ˈ ʌ t s æ p"},
+ "spoken": {"1st": "first", "2nd": "second", "$60": "sixty dollars", "31": "thirty first", "8000": "eight zero zero zero,", "0000": "zero zero zero zero,", "K": "kay"},
+ "scenes": [
+  {"name": "hook", "lead": 0.55, "tail": 0.35, "lines": [{"say": "Year end is coming. Is your sofa ready?", "cap": "Year-end is coming. Is your sofa ready?"}]},
+  {"name": "title", "lead": 0.45, "tail": 0.55, "lines": [{"say": "Kay Cleans upholstery deep cleaning promo is here.", "cap": "K Clean's upholstery deep cleaning promo is here."}]},
+  {"name": "photo", "lead": 0.45, "tail": 0.6, "lines": [{"say": "Professional cleaning. Deep extraction. Satisfaction first."}]},
+  {"name": "price", "lead": 0.5, "tail": 0.7, "lines": [
+    {"say": "Your first item is at the regular price.", "cap": "Your 1st item is at the regular price."},
+    {"say": "From the second item onwards, it's just sixty dollars each.", "cap": "From the 2nd item onwards, it's just $60 each."},
+    {"say": "Same visit, same location."}]},
+  {"name": "tag", "lead": 0.35, "tail": 0.6, "lines": [{"say": "More items. More savings. One visit."}]},
+  {"name": "cta", "lead": 0.45, "tail": 0.7, "lines": [
+    {"say": "The promo ends thirty first December.", "cap": "The promo ends 31 December."},
+    {"say": "Whatsapp, eight zero zero zero, zero zero zero zero, to book your slot.", "cap": "WhatsApp 8000 0000 to book your slot."}]},
+  {"name": "poster", "lead": 0.7, "tail": 2.3, "lines": [{"say": "Kay Clean. Book your slot now.", "cap": "K Clean. Book your slot now."}]}
+ ]
+}

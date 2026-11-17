@@ -1,0 +1,96 @@
+{
+ "voice": 3,
+ "speed": 1.04,
+ "gap": 0.26,
+ "music": true,
+ "bpm": 96,
+ "lexicon": {
+ },
+ "spoken": {
+  "8": "eight",
+  "1": "one"
+ },
+ "scenes": [
+  {
+   "name": "hook",
+   "lead": 0.5,
+   "tail": 0.5,
+   "lines": [
+    {
+     "say": "This is my dad. He marks the lines on this field."
+    }
+   ]
+  },
+  {
+   "name": "sun",
+   "lead": 0.4,
+   "tail": 0.5,
+   "lines": [
+    {
+     "say": "Out here under the hot sun, every single week."
+    }
+   ]
+  },
+  {
+   "name": "forgets",
+   "lead": 0.4,
+   "tail": 0.5,
+   "lines": [
+    {
+     "say": "But he always forgets one thing."
+    }
+   ]
+  },
+  {
+   "name": "water",
+   "lead": 0.5,
+   "tail": 0.7,
+   "lines": [
+    {
+     "say": "Water."
+    }
+   ]
+  },
+  {
+   "name": "avatar",
+   "lead": 0.45,
+   "tail": 0.6,
+   "lines": [
+    {
+     "say": "Dad, don't forget to drink your water."
+    }
+   ]
+  },
+  {
+   "name": "rule",
+   "lead": 0.4,
+   "tail": 0.55,
+   "lines": [
+    {
+     "say": "One glass every hour outside. About eight a day."
+    }
+   ]
+  },
+  {
+   "name": "why",
+   "lead": 0.4,
+   "tail": 0.55,
+   "lines": [
+    {
+     "say": "Less dizzy spells, fewer cramps, more energy."
+    }
+   ]
+  },
+  {
+   "name": "close",
+   "lead": 0.5,
+   "tail": 1.8,
+   "lines": [
+    {
+     "say": "Love you, Dad. Please drink your water."
+    }
+   ]
+  }
+ ],
+ "thumbnail_at": 2.2
+}

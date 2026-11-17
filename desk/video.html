@@ -1,0 +1,17 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+@font-face{font-family:Montserrat;font-weight:800;src:url(node_modules/@fontsource/montserrat/files/montserrat-latin-800-normal.woff2)}
+@font-face{font-family:Montserrat;font-weight:900;src:url(node_modules/@fontsource/montserrat/files/montserrat-latin-900-normal.woff2)}
+@font-face{font-family:Inter;font-weight:600;src:url(node_modules/@fontsource/inter/files/inter-latin-600-normal.woff2)}
+@font-face{font-family:Inter;font-weight:700;src:url(node_modules/@fontsource/inter/files/inter-latin-700-normal.woff2)}
+@font-face{font-family:Inter;font-weight:800;src:url(node_modules/@fontsource/inter/files/inter-latin-800-normal.woff2)}
+html,body{margin:0;width:270px;height:480px;overflow:hidden;background:#f1f6f3}
+</style><script src="scenes.js"></script></head><body><div class="cs-st" id="st"></div>
+<script>
+DESK.css();let SB=null,TL=null,MD=[],FR={};const st=document.getElementById('st');
+function setup(sb,tl,md,fr){SB=sb;TL=tl;MD=md||[];FR=fr||{}}
+const pad=n=>String(n).padStart(5,'0');
+function render(t){let i=TL.findIndex(x=>t<x.t0+x.d);if(i<0)i=TL.length-1;const L=TL[i];const n=FR[i];
+  DESK.frame(st,SB.scenes[i],t-L.t0,{dur:L.d,words:L.words,avBase:'av/',media:MD,brand:SB.brand,frameSrc:n?lt=>`media/s${i}/f${pad(Math.max(1,Math.min(n,Math.floor(lt*30)+1)))}.jpg`:null});
+  return Promise.all([...st.querySelectorAll('img')].map(im=>im.complete?1:im.decode().catch(()=>1)))}
+function thumb(){DESK.thumb(st,SB.thumbnail||{headline:SB.scenes[0].headline},{avBase:'av/',media:MD,brand:SB.brand});return Promise.all([...st.querySelectorAll('img')].map(im=>im.complete?1:im.decode().catch(()=>1)))}
+</script></body></html>

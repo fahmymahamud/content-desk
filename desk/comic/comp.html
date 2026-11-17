@@ -1,0 +1,24 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+@font-face{font-family:Bangers;src:url(node_modules/@fontsource/bangers/files/bangers-latin-400-normal.woff2)}
+@font-face{font-family:Montserrat;font-weight:900;src:url(node_modules/@fontsource/montserrat/files/montserrat-latin-900-normal.woff2)}
+@font-face{font-family:Montserrat;font-weight:800;src:url(node_modules/@fontsource/montserrat/files/montserrat-latin-800-normal.woff2)}
+:root{--ink:#17100a;--yel:#ffd43d;--blu:#2bb3f0;--red:#ff4f32;--cream:#fff6e2}
+html,body{margin:0;width:1080px;height:1920px;overflow:hidden;background:#000}
+#stage{position:absolute;left:0;top:0;width:1080px;height:1920px;overflow:hidden;background:var(--cream);font-family:Bangers,Montserrat,sans-serif}
+#cam{position:absolute;inset:0}
+.o{position:absolute;left:0;top:0;transform-origin:50% 50%}
+.half{background-image:radial-gradient(rgba(23,16,10,.5) 32%,transparent 33%);background-size:15px 15px}
+.ink{border:9px solid var(--ink);box-sizing:border-box}
+.ttl{font-family:Bangers;color:#fff;letter-spacing:2px;line-height:.95;text-align:center;
+  text-shadow:0 0 0 #17100a,6px 6px 0 #17100a,-6px 6px 0 #17100a,6px -6px 0 #17100a,-6px -6px 0 #17100a,0 7px 0 #17100a,0 -7px 0 #17100a,7px 0 0 #17100a,-7px 0 0 #17100a,10px 14px 0 rgba(23,16,10,.35)}
+.bub{background:#fff;border:9px solid var(--ink);border-radius:44px;box-sizing:border-box;display:flex;align-items:center;justify-content:center;text-align:center;
+  font-family:Bangers;color:var(--ink);letter-spacing:1.5px;line-height:1;padding:22px 30px;box-shadow:12px 14px 0 rgba(23,16,10,.3)}
+.tail{position:absolute;width:0;height:0}
+.chip{background:var(--yel);border:8px solid var(--ink);border-radius:999px;box-sizing:border-box;display:flex;align-items:center;justify-content:center;gap:14px;
+  font-family:Bangers;color:var(--ink);letter-spacing:1px;box-shadow:9px 10px 0 rgba(23,16,10,.3)}
+#cap{position:absolute;left:0;right:0;top:1468px;text-align:center;z-index:60}
+#cap span.b{display:inline-block;background:var(--ink);color:#fff;border:6px solid #fff;border-radius:22px;padding:14px 32px;max-width:930px;
+  font:900 54px/1.12 Montserrat,sans-serif;letter-spacing:-.5px;box-shadow:10px 12px 0 rgba(23,16,10,.35)}
+#cap em{font-style:normal;color:var(--yel)}
+</style></head><body><div id="stage"><div id="cam"></div><div id="cap"></div></div>
+<script src="engine.js"></script><script src="props.js"></script><script src="scenes.js"></script></body></html>
